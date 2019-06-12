@@ -9,6 +9,7 @@ import {
   getDescendantsIds, replaceWithComponent, isNA,
 } from './processing/utils';
 import StructChildField from './StructChildField';
+import StructChildFieldWithTabs from './StructChildFieldWithTabs';
 import FieldInput from './FieldInput';
 
 
@@ -40,12 +41,19 @@ class BlockContent extends React.Component {
   get html() {
     const {fieldId, blockDefinition, blockId} = this.props;
     if (isStruct(blockDefinition)) {
-      const blocksContainer = blockDefinition.children.map(
-        childBlockDefinition =>
-          <StructChildField key={childBlockDefinition.key} fieldId={fieldId}
-                            parentBlockId={blockId}
-                            type={childBlockDefinition.key}/>
-      );
+      let blocksContainer = null;
+      if(blockDefinition.tabs !== undefined ) {
+        blocksContainer = (<StructChildFieldWithTabs fieldId={fieldId}
+                                                     blockId={blockId} />);
+      } else {
+        blocksContainer = blockDefinition.children.map(
+          childBlockDefinition =>
+            <StructChildField key={childBlockDefinition.key} fieldId={fieldId}
+                              parentBlockId={blockId}
+                              type={childBlockDefinition.key}
+                              collapsible={childBlockDefinition.collapsible} />
+        );
+      }
       let html = this.props.html;
       if (isNA(html)) {
         html = blockDefinition.html;

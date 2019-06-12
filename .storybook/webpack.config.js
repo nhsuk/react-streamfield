@@ -40,6 +40,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
       },
     ],
     include: path.resolve(__dirname, "../"),
+    exclude: /node_modules/,
   });
 
   defaultConfig.plugins.push(

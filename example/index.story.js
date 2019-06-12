@@ -411,6 +411,72 @@ storiesOf('React StreamField demo', module)
     };
     return <StreamField {...props} id='stream' />;
   })
+  .add('Struct block with tabs', () => {
+    const props = {
+      value: [],
+      blockDefinitions: [
+        {
+          key: 'struct',
+          isStruct: true,
+          titleTemplate: 'Struct block with tabs',
+          tabs: [{
+            key: 'tab1',
+            label: 'Tab1',
+            fields: ['field_tab1_1', 'field_tab1_2'],
+          }, {
+            key: 'tab2',
+            label: 'Tab2',
+            fields: ['field_tab2_1', 'field_tab2_2'],
+          }],
+          children: [
+            {
+              key: 'field_tab1_1'
+            },
+            {
+              key: 'field_tab1_2',
+              titleTemplate: '${field_tab3_1}',
+              isStruct: true,
+              collapsible: true,
+              closed: true,
+              tabs: [{
+                key: 'tab3',
+                titleTemplate: '${field_tab3_2}',
+                fields: ['field_tab3_1', 'field_tab3_2'],
+              }, {
+                key: 'tab4',
+                label: 'Tab4',
+                fields: ['field_tab4_1', 'field_tab4_2'],
+              }],
+              children: [
+                {
+                  key: 'field_tab3_1',
+                  default: 'Field 3-1'
+                },
+                {
+                  key: 'field_tab3_2',
+                  default: 'Field 3-2'
+                },
+                {
+                  key: 'field_tab4_1'
+                },
+                {
+                  key: 'field_tab4_2'
+                }
+              ]
+            },
+            {
+              key: 'field_tab2_1'
+            },
+            {
+              key: 'field_tab2_2'
+            }
+          ],
+          label: 'Struct'
+        }
+      ]
+    };
+    return <StreamField {...props} id='stream' />;
+  })
   .add('StructBlock as a list block child', () => {
     const props = {
       required: true,
