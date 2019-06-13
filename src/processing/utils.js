@@ -228,6 +228,7 @@ export const getNewBlock = (parentId, blockDefinition, value=null) => {
       value: value,
       hidden: true,
       closed: blockDefinition.closed === undefined ? false : blockDefinition.closed,
+      collapsible: blockDefinition.collapsible === undefined ? false : blockDefinition.collapsible,
       shouldUpdate: false,
     },
     extraBlocks,

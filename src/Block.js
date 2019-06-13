@@ -60,7 +60,6 @@ class Block extends React.Component {
 
   static defaultProps = {
     standalone: false,
-    collapsible: true,
     sortable: true,
     canAdd: true,
   };

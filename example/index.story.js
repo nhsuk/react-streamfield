@@ -382,6 +382,7 @@ storiesOf('React StreamField demo', module)
         {
           key: 'struct',
           isStruct: true,
+          collapsible: true,
           children: [
             {
               key: 'some_field'

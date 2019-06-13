@@ -382,6 +382,7 @@ storiesOf('React StreamField demo', module)
         {
           key: 'struct',
           isStruct: true,
+          collapsible: true,
           children: [
             {
               key: 'some_field'
@@ -403,6 +404,114 @@ storiesOf('React StreamField demo', module)
             },
             {
               key: 'another_field'
+            }
+          ],
+          label: 'Struct'
+        }
+      ]
+    };
+    return <StreamField {...props} id='stream' />;
+  })
+  .add('Struct block as a struct block field collapsible', () => {
+    const props = {
+      value: [],
+      blockDefinitions: [
+        {
+          key: 'struct',
+          isStruct: true,
+          children: [
+            {
+              key: 'some_field'
+            },
+            {
+              key: 'link',
+              isStruct: true,
+              collapsible: true,
+              closed: true,
+              titleTemplate: '${label}',
+              children: [
+                {
+                  key: 'label',
+                  label: 'Label',
+                  default: 'label'
+                },
+                {
+                  key: 'email',
+                  label: 'E-mail'
+                }
+              ],
+            },
+            {
+              key: 'another_field'
+            }
+          ],
+          label: 'Struct'
+        }
+      ]
+    };
+    return <StreamField {...props} id='stream' />;
+  })
+  .add('Struct block with tabs', () => {
+    const props = {
+      value: [],
+      blockDefinitions: [
+        {
+          key: 'struct',
+          isStruct: true,
+          titleTemplate: 'Struct block with tabs',
+          tabs: [{
+            key: 'tab1',
+            label: 'Tab1',
+            fields: ['field_tab1_1', 'field_tab1_2'],
+          }, {
+            key: 'tab2',
+            label: 'Tab2',
+            fields: ['field_tab2_3', 'field_tab2_1', 'field_tab2_2'],
+          }],
+          children: [
+            {
+              key: 'field_tab1_1'
+            },
+            {
+              key: 'field_tab1_2',
+              titleTemplate: '${field_tab3_1}',
+              isStruct: true,
+              collapsible: true,
+              closed: true,
+              tabs: [{
+                key: 'tab3',
+                titleTemplate: '${field_tab3_2}',
+                fields: ['field_tab3_1', 'field_tab3_2'],
+              }, {
+                key: 'tab4',
+                label: 'Tab4',
+                fields: ['field_tab4_1', 'field_tab4_2'],
+              }],
+              children: [
+                {
+                  key: 'field_tab3_1',
+                  default: 'Field 3-1'
+                },
+                {
+                  key: 'field_tab3_2',
+                  default: 'Field 3-2'
+                },
+                {
+                  key: 'field_tab4_1'
+                },
+                {
+                  key: 'field_tab4_2'
+                }
+              ]
+            },
+            {
+              key: 'field_tab2_1'
+            },
+            {
+              key: 'field_tab2_2'
+            },
+            {
+              key: 'field_tab2_3'
             }
           ],
           label: 'Struct'

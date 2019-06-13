@@ -628,6 +628,7 @@ var getNewBlock = function getNewBlock(parentId, blockDefinition) {
     value: value,
     hidden: true,
     closed: blockDefinition.closed === undefined ? false : blockDefinition.closed,
+    collapsible: blockDefinition.collapsible === undefined ? false : blockDefinition.collapsible,
     shouldUpdate: false
   }, extraBlocks];
 };
@@ -1736,11 +1737,23 @@ function (_React$Component) {
         }, _this.get_title(tabDefinition));
       });
       var tabPanel = blockDefinition.tabs.map(function (tabDefinition) {
+        var fieldBlocksDefinition = blockDefinition.children.filter(function (child) {
+          return tabDefinition.fields.includes(child.key);
+        });
+        fieldBlocksDefinition.sort(function (fieldA, fieldB) {
+          if (tabDefinition.fields.indexOf(fieldA.key) < tabDefinition.fields.indexOf(fieldB.key)) {
+            return -1;
+          }
+
+          if (tabDefinition.fields.indexOf(fieldA.key) > tabDefinition.fields.indexOf(fieldB.key)) {
+            return 1;
+          }
+
+          return 0;
+        });
         return React.createElement(TabPanel, {
           key: 'tab-panel-' + tabDefinition.key
-        }, blockDefinition.children.filter(function (child) {
-          return tabDefinition.fields.includes(child.key);
-        }).map(function (childBlockDefinition) {
+        }, fieldBlocksDefinition.map(function (childBlockDefinition) {
           return React.createElement(StructChildField, {
             key: childBlockDefinition.key,
             fieldId: fieldId,
@@ -1763,7 +1776,7 @@ process.env.NODE_ENV !== "production" ? StructChildFieldWithTabs.propTypes = {
   blockId: PropTypes.string.isRequired
 } : void 0;
 
-var _dec$5, _class$5, _class2$3, _temp$3;
+var _dec$5, _class$5;
 var BlockContent = (_dec$5 = connect(function (state, props) {
   var fieldId = props.fieldId,
       blockId = props.blockId;
@@ -1777,9 +1790,10 @@ var BlockContent = (_dec$5 = connect(function (state, props) {
   return {
     blockDefinition: blockDefinition,
     html: block.html,
-    closed: block.closed && !hasDescendantError
+    collapsible: blockDefinition.collapsible,
+    closed: blockDefinition.collapsible && block.closed && !hasDescendantError
   };
-}), _dec$5(_class$5 = (_temp$3 = _class2$3 =
+}), _dec$5(_class$5 =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(BlockContent, _React$Component);
@@ -1868,16 +1882,14 @@ function (_React$Component) {
   }]);
 
   return BlockContent;
-}(React.Component), _class2$3.defaultProps = {
-  collapsible: true
-}, _temp$3)) || _class$5);
+}(React.Component)) || _class$5);
 process.env.NODE_ENV !== "production" ? BlockContent.propTypes = {
   fieldId: PropTypes.string.isRequired,
   blockId: PropTypes.string.isRequired,
   collapsible: PropTypes.bool
 } : void 0;
 
-var _dec$6, _class$6, _class2$4, _temp$4;
+var _dec$6, _class$6, _class2$3, _temp$3;
 var BlockActions = (_dec$6 = connect(function (state, props) {
   var fieldId = props.fieldId,
       blockId = props.blockId;
@@ -1902,7 +1914,7 @@ var BlockActions = (_dec$6 = connect(function (state, props) {
       return duplicateBlock(fieldId, blockId);
     }
   }, dispatch);
-}), _dec$6(_class$6 = (_temp$4 = _class2$4 =
+}), _dec$6(_class$6 = (_temp$3 = _class2$3 =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(BlockActions, _React$Component);
@@ -2045,10 +2057,10 @@ function (_React$Component) {
   }]);
 
   return BlockActions;
-}(React.Component), _class2$4.defaultProps = {
+}(React.Component), _class2$3.defaultProps = {
   sortableBlock: true,
   canDuplicate: true
-}, _temp$4)) || _class$6);
+}, _temp$3)) || _class$6);
 process.env.NODE_ENV !== "production" ? BlockActions.propTypes = {
   fieldId: PropTypes.string.isRequired,
   blockId: PropTypes.string.isRequired,
@@ -2057,7 +2069,7 @@ process.env.NODE_ENV !== "production" ? BlockActions.propTypes = {
   dragHandleRef: refType
 } : void 0;
 
-var _dec$7, _class$7, _class2$5, _temp$5;
+var _dec$7, _class$7, _class2$4, _temp$4;
 var BlockHeader = (_dec$7 = connect(function (state, props) {
   var fieldId = props.fieldId,
       blockId = props.blockId;
@@ -2079,7 +2091,7 @@ var BlockHeader = (_dec$7 = connect(function (state, props) {
       return toggleBlock(fieldId, blockId);
     }
   }, dispatch);
-}), _dec$7(_class$7 = (_temp$5 = _class2$5 =
+}), _dec$7(_class$7 = (_temp$4 = _class2$4 =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(BlockHeader, _React$Component);
@@ -2196,11 +2208,11 @@ function (_React$Component) {
   }]);
 
   return BlockHeader;
-}(React.Component), _class2$5.defaultProps = {
+}(React.Component), _class2$4.defaultProps = {
   collapsibleBlock: true,
   sortableBlock: true,
   canDuplicate: true
-}, _temp$5)) || _class$7);
+}, _temp$4)) || _class$7);
 process.env.NODE_ENV !== "production" ? BlockHeader.propTypes = {
   fieldId: PropTypes.string.isRequired,
   blockId: PropTypes.string.isRequired,
@@ -2211,7 +2223,7 @@ process.env.NODE_ENV !== "production" ? BlockHeader.propTypes = {
   dragHandleProps: PropTypes.object
 } : void 0;
 
-var _dec$8, _class$8, _class2$6, _temp$6;
+var _dec$8, _class$8, _class2$5, _temp$5;
 var Block = (_dec$8 = connect(function (state, props) {
   var fieldId = props.fieldId,
       id = props.id;
@@ -2246,7 +2258,7 @@ var Block = (_dec$8 = connect(function (state, props) {
       return deleteBlock(fieldId, id);
     }
   }, dispatch);
-}), _dec$8(_class$8 = (_temp$6 = _class2$6 =
+}), _dec$8(_class$8 = (_temp$5 = _class2$5 =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(Block, _React$Component);
@@ -2391,12 +2403,11 @@ function (_React$Component) {
   }]);
 
   return Block;
-}(React.Component), _class2$6.defaultProps = {
+}(React.Component), _class2$5.defaultProps = {
   standalone: false,
-  collapsible: true,
   sortable: true,
   canAdd: true
-}, _temp$6)) || _class$8);
+}, _temp$5)) || _class$8);
 process.env.NODE_ENV !== "production" ? Block.propTypes = {
   fieldId: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
@@ -2499,7 +2510,7 @@ process.env.NODE_ENV !== "production" ? BlocksContainer.propTypes = {
   id: PropTypes.string
 } : void 0;
 
-var _dec$a, _class$a, _class2$7, _temp$7;
+var _dec$a, _class$a, _class2$6, _temp$6;
 
 function lazyFunction(f) {
   return function () {
@@ -2571,7 +2582,7 @@ var StreamField = (_dec$a = connect(function (state, props) {
       return moveBlock(id, blockId, newIndex);
     }
   }, dispatch);
-}), _dec$a(_class$a = (_temp$7 = _class2$7 =
+}), _dec$a(_class$a = (_temp$6 = _class2$6 =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(StreamField, _React$Component);
@@ -2662,7 +2673,7 @@ function (_React$Component) {
   }]);
 
   return StreamField;
-}(React.Component), _class2$7.defaultProps = StreamFieldDefaultProps, _temp$7)) || _class$a);
+}(React.Component), _class2$6.defaultProps = StreamFieldDefaultProps, _temp$6)) || _class$a);
 process.env.NODE_ENV !== "production" ? StreamField.propTypes = {
   id: PropTypes.string.isRequired,
   required: PropTypes.bool,

@@ -24,7 +24,8 @@ import FieldInput from './FieldInput';
   return {
     blockDefinition,
     html: block.html,
-    closed: block.closed && !hasDescendantError,
+    collapsible: blockDefinition.collapsible,
+    closed: blockDefinition.collapsible && block.closed && !hasDescendantError,
   };
 })
 class BlockContent extends React.Component {
@@ -32,10 +33,6 @@ class BlockContent extends React.Component {
     fieldId: PropTypes.string.isRequired,
     blockId: PropTypes.string.isRequired,
     collapsible: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    collapsible: true,
   };
 
   get html() {
