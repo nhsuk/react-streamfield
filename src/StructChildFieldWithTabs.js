@@ -73,15 +73,28 @@ class StructChildFieldWithTabs extends React.Component {
     );
 
     const tabPanel = blockDefinition.tabs.map(
-        tabDefinition => <TabPanel key={'tab-panel-'+tabDefinition.key}>
-            {blockDefinition.children.filter(child => tabDefinition.fields.includes(child.key)).map(
-                childBlockDefinition =>
+        tabDefinition => {
+          const fieldBlocksDefinition = blockDefinition.children.filter(child => tabDefinition.fields.includes(child.key));
+          fieldBlocksDefinition.sort(function(fieldA, fieldB) {
+            if(tabDefinition.fields.indexOf(fieldA.key) < tabDefinition.fields.indexOf(fieldB.key)){
+              return -1;
+            }
+            if(tabDefinition.fields.indexOf(fieldA.key) > tabDefinition.fields.indexOf(fieldB.key)){
+              return 1;
+            }
+            return 0;
+          });
+          return (
+            <TabPanel key={'tab-panel-'+tabDefinition.key}>
+              {fieldBlocksDefinition.map(childBlockDefinition =>
                     <StructChildField key={childBlockDefinition.key} fieldId={fieldId}
                                     parentBlockId={blockId}
                                     type={childBlockDefinition.key}
                                     collapsible={childBlockDefinition.collapsible} />
-            )}
-        </TabPanel>
+              )}
+            </TabPanel>
+          )
+        }
     );
 
     return (

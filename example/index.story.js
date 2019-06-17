@@ -426,7 +426,7 @@ storiesOf('React StreamField demo', module)
           }, {
             key: 'tab2',
             label: 'Tab2',
-            fields: ['field_tab2_1', 'field_tab2_2'],
+            fields: ['field_tab2_3', 'field_tab2_1', 'field_tab2_2'],
           }],
           children: [
             {
@@ -469,6 +469,9 @@ storiesOf('React StreamField demo', module)
             },
             {
               key: 'field_tab2_2'
+            },
+            {
+              key: 'field_tab2_3'
             }
           ],
           label: 'Struct'
