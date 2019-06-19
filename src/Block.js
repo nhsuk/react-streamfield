@@ -117,7 +117,7 @@ class Block extends React.Component {
         <Draggable draggableId={id} index={index}
                    type={`${fieldId}-${parentId}`}>
           {(provided, snapshot) => (
-            <div className="c-sf-container__block-container"
+            <div className="c-sf-container__block-container" data-index={index}
                  ref={provided.innerRef} {...provided.draggableProps}>
               <div className={blockClassName}>
                 <BlockHeader fieldId={fieldId} blockId={id}

@@ -2345,6 +2345,7 @@ function (_React$Component) {
         }, function (provided, snapshot) {
           return React.createElement("div", _extends({
             className: "c-sf-container__block-container",
+            "data-index": index,
             ref: provided.innerRef
           }, provided.draggableProps), React.createElement("div", {
             className: blockClassName
