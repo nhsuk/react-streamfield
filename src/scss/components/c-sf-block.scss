@@ -28,6 +28,7 @@
         cursor: default;
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
+        min-height: 30px;
 
         @media (min-width: $screen-sm-min) {
             padding-left: $content-padding-horizontal - $header-gutter;
@@ -97,7 +98,7 @@
 
             &:focus,
             &:hover {
-                background-color: #eee;
+                background-color: rgba(0, 0, 0, 0.05);
 
                 i {
                     color: #333;
