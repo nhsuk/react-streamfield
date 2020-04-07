@@ -1003,7 +1003,7 @@ function (_React$Component) {
       var button = React.createElement("button", {
         onClick: this.toggle,
         title: labels.add,
-        className: classNames('c-sf-add-button', visible && 'c-sf-add-button--visible', this.state.open && this.hasChoice && 'c-sf-add-button--closed'),
+        className: classNames('c-sf-add-button', visible && 'c-sf-add-button--visible', this.state.open && this.hasChoice && 'c-sf-add-button--close'),
         dangerouslySetInnerHTML: {
           __html: icons.add
         }
@@ -1277,6 +1277,23 @@ function (_React$Component) {
         }).map(function (box) {
           return box.value;
         });
+        var previousValue = _this.props.value;
+
+        if (input.type === 'radio') {
+          if (previousValue) {
+            // Makes it possible to select only one radio button at a time.
+            boxes.filter(function (box) {
+              return box.value === previousValue;
+            })[0].checked = false;
+            var index = value.indexOf(previousValue);
+
+            if (index > -1) {
+              value.splice(index, 1);
+            }
+          }
+
+          value = value.length > 0 ? value[0] : null;
+        }
       } else if (input.tagName === 'SELECT') {
         value = input.options[input.selectedIndex].value;
       } else {
@@ -1538,7 +1555,8 @@ function (_React$Component) {
           fieldId: fieldId,
           id: blockId,
           standalone: true,
-          sortable: false
+          sortable: false,
+          collapsible: blockDefinition.collapsible
         });
       }
 
@@ -2005,13 +2023,14 @@ function (_React$Component) {
           blockDefinition = _this$props.blockDefinition,
           sortableBlock = _this$props.sortableBlock,
           canDuplicate = _this$props.canDuplicate,
+          standalone = _this$props.standalone,
           icons = _this$props.icons,
           labels = _this$props.labels;
       return React.createElement("div", {
         className: "c-sf-block__actions"
       }, React.createElement("span", {
         className: "c-sf-block__type"
-      }, getLabel(blockDefinition)), sortableBlock ? React.createElement(React.Fragment, null, React.createElement("button", {
+      }, getLabel(blockDefinition)), standalone ? null : React.createElement(React.Fragment, null, sortableBlock ? React.createElement(React.Fragment, null, React.createElement("button", {
         className: "c-sf-block__actions__single",
         onClick: this.moveUpHandler,
         title: labels.moveUp,
@@ -2042,7 +2061,7 @@ function (_React$Component) {
         dangerouslySetInnerHTML: {
           __html: icons.delete
         }
-      }));
+      })));
     }
   }, {
     key: "isFirst",
@@ -2059,13 +2078,15 @@ function (_React$Component) {
   return BlockActions;
 }(React.Component), _class2$3.defaultProps = {
   sortableBlock: true,
-  canDuplicate: true
+  canDuplicate: true,
+  standalone: false
 }, _temp$3)) || _class$6);
 process.env.NODE_ENV !== "production" ? BlockActions.propTypes = {
   fieldId: PropTypes.string.isRequired,
   blockId: PropTypes.string.isRequired,
   sortableBlock: PropTypes.bool,
   canDuplicate: PropTypes.bool,
+  standalone: PropTypes.bool,
   dragHandleRef: refType
 } : void 0;
 
@@ -2141,6 +2162,7 @@ function (_React$Component) {
           collapsibleBlock = _this$props2.collapsibleBlock,
           sortableBlock = _this$props2.sortableBlock,
           canDuplicate = _this$props2.canDuplicate,
+          standalone = _this$props2.standalone,
           dragHandleRef = _this$props2.dragHandleRef;
       return React.createElement("div", _extends({
         ref: dragHandleRef,
@@ -2159,6 +2181,7 @@ function (_React$Component) {
         blockId: blockId,
         sortableBlock: sortableBlock,
         canDuplicate: canDuplicate,
+        standalone: standalone,
         dragHandleRef: dragHandleRef
       }));
     }
@@ -2211,7 +2234,8 @@ function (_React$Component) {
 }(React.Component), _class2$4.defaultProps = {
   collapsibleBlock: true,
   sortableBlock: true,
-  canDuplicate: true
+  canDuplicate: true,
+  standalone: false
 }, _temp$4)) || _class$7);
 process.env.NODE_ENV !== "production" ? BlockHeader.propTypes = {
   fieldId: PropTypes.string.isRequired,
@@ -2219,6 +2243,7 @@ process.env.NODE_ENV !== "production" ? BlockHeader.propTypes = {
   collapsibleBlock: PropTypes.bool,
   sortableBlock: PropTypes.bool,
   canDuplicate: PropTypes.bool,
+  standalone: PropTypes.bool,
   dragHandleRef: refType,
   dragHandleProps: PropTypes.object
 } : void 0;
@@ -2322,7 +2347,8 @@ function (_React$Component) {
           hasError = _this$props.hasError,
           collapsible = _this$props.collapsible,
           sortable = _this$props.sortable,
-          canAdd = _this$props.canAdd;
+          canAdd = _this$props.canAdd,
+          standalone = _this$props.standalone;
       var blockClassName = "c-sf-block ".concat(hasError ? 'c-sf-block--error' : '');
       var addButton = React.createElement(AddButton, {
         fieldId: fieldId,
@@ -2349,6 +2375,7 @@ function (_React$Component) {
             collapsibleBlock: collapsible,
             sortableBlock: sortable,
             canDuplicate: canAdd,
+            standalone: standalone,
             dragHandleRef: _this2.dragHandleRef,
             dragHandleProps: provided.dragHandleProps
           }), blockContent), addButton);
@@ -2365,8 +2392,9 @@ function (_React$Component) {
         collapsibleBlock: collapsible,
         sortableBlock: sortable,
         canDuplicate: canAdd,
+        standalone: standalone,
         dragHandleRef: this.dragHandleRef
-      }), blockContent), addButton);
+      }), blockContent), standalone ? null : addButton);
     }
   }, {
     key: "render",
@@ -2383,7 +2411,7 @@ function (_React$Component) {
         collapsible: collapsible
       });
 
-      if (standalone) {
+      if (standalone && !collapsible) {
         return React.createElement("div", {
           className: "c-sf-container__block-container"
         }, React.createElement("div", {

@@ -36,7 +36,7 @@
   opacity: 0.8;
   pointer-events: unset;
 }
-.c-sf-add-button--closed i {
+.c-sf-add-button--close i {
   transform: rotate(45deg);
 }
 
@@ -140,6 +140,7 @@
   cursor: default;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  min-height: 30px;
 }
 @media (min-width: 800px) {
   .c-sf-block__header {
@@ -201,7 +202,7 @@
   margin-right: 3px;
 }
 .c-sf-block__actions__single:focus, .c-sf-block__actions__single:hover {
-  background-color: #eee;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 .c-sf-block__actions__single:focus i, .c-sf-block__actions__single:hover i {
   color: #333;
